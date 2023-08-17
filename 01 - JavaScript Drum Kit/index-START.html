@@ -59,7 +59,25 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+// Add event listener to each key element
+// Create function to trigger audio element
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if (!audio) return; // if no audio, stop running function
+    audio.currentTime = 0; // rewinds the audio if event is triggered // where does the currentTime prop come from? 
+    audio.play();
+    key.classList.add('playing');
+  };
 
+  function removeTransition(e) {
+    if(e.propertyName !== 'transform') return; // skip if not a transform // where does propertyName 'transform' come from?
+    this.classList.remove('playing');
+  };
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
 </script>
 
 
